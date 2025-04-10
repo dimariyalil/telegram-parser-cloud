@@ -70,17 +70,26 @@ async def main():
 
                     now = datetime.datetime.now().strftime("%Y-%m-%d %H:%M")
                     link = f"https://t.me/{chat.username}"
-                    worksheet.append_row([
-                        chat.title,
-                        chat.username,
-                        link,
-                        "",
-                        chat.participants_count,
-                        keyword,
-                        description,
-                        lang,
-                        "", "", now, STATUS_ON_INSERT
-                    ])
+                    print(f"📝 Пытаюсь записать: {chat.title} | @{chat.username} | {chat.participants_count} сабов")
+
+try:
+    worksheet.append_row([
+        chat.title,
+        chat.username,
+        link,
+        "",
+        chat.participants_count,
+        keyword,
+        description,
+        lang,
+        "", "", now, STATUS_ON_INSERT
+    ])
+    print(f"✅ Добавлено: {chat.title}")
+except Exception as write_error:
+    print(f"❌ Ошибка при записи в таблицу: {write_error}")
+    save_file("keywords_failed.txt", keyword)
+    log(f"❌ Ошибка при записи: {write_error}")
+    continue
                     print(f"✅ Добавлено: {chat.title}")
 
             save_file("keywords_done.txt", keyword)
