@@ -57,8 +57,9 @@ async def main():
                     try:
                         full = await client(functions.channels.GetFullChannelRequest(channel=chat))
                         description = full.full_chat.about or ""
-                    except:
+                    except Exception as full_error:
                         description = ""
+                        log(f"⚠️ Не удалось получить описание: {full_error}")
 
                     try:
                         lang = detect(chat.title + " " + description)
@@ -93,6 +94,8 @@ async def main():
                         save_file("keywords_failed.txt", keyword)
                         log(f"❌ Ошибка при записи: {write_error}")
                         continue
+                else:
+                    print(f"⛔ Пропущен объект: {getattr(chat, 'title', 'без названия')} (нет username или не Channel)")
 
         except Exception as e:
             save_file("keywords_failed.txt", keyword)
