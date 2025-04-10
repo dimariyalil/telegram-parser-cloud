@@ -1,4 +1,5 @@
-
+import os
+import json
 import asyncio
 import random
 import datetime
@@ -12,7 +13,11 @@ import gspread
 from gspread_formatting import format_cell_range, cellFormat, color
 from parser_config import *
 
-client = TelegramClient('football_parser', api_id=22483560, api_hash='b0d6834ddeb4927dbf4de8713fb8c96c')
+# === Telegram bot-based session ===
+api_id = 22483560  # ← вставь свой
+api_hash = 'b0d6834ddeb4927dbf4de8713fb8c96c'  # ← вставь свой
+
+client = TelegramClient('bot', api_id, api_hash).start(bot_token=os.environ['7698841830:AAFIVD8cMc_GrEJBX2PayyM-0RU21mKU3x8'])
 
 def log(msg):
     with open("parser_log.txt", "a", encoding="utf-8") as f:
@@ -27,8 +32,11 @@ def save_file(name, data):
         f.write(data + "\n")
 
 async def main():
-    await client.start()
-    creds = ServiceAccountCredentials.from_json_keyfile_name('credentials.json', ['https://spreadsheets.google.com/feeds','https://www.googleapis.com/auth/drive'])
+    creds_dict = json.loads(os.environ['GOOGLE_CREDS'])
+    creds = ServiceAccountCredentials.from_json_keyfile_dict(
+        creds_dict,
+        ['https://spreadsheets.google.com/feeds', 'https://www.googleapis.com/auth/drive']
+    )
     gc = gspread.authorize(creds)
     worksheet = gc.open(GOOGLE_SHEET_NAME).sheet1
 
