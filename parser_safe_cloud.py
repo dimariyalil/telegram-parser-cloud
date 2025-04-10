@@ -52,9 +52,10 @@ async def main():
         print(f"🔍 Ключ: {keyword}")
         try:
             result = await client(SearchRequest(q=keyword, limit=20))
-            print(f"📦 result.chats = {result.chats}")  # 🔥 DEBUG: выводим весь результат
 
             for chat in result.chats:
+                print(f"📦 ОБЪЕКТ: {getattr(chat, 'title', 'нет названия')} | username: {getattr(chat, 'username', None)}")
+
                 if isinstance(chat, (Channel, Chat)) and getattr(chat, "username", None):
                     try:
                         full = await client(functions.channels.GetFullChannelRequest(channel=chat))
