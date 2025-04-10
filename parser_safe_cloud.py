@@ -13,8 +13,8 @@ import gspread
 from gspread_formatting import format_cell_range, cellFormat, color
 from parser_config import *
 
-api_id = 22483560  # 👈 Вставь сюда свой api_id
-api_hash = 'b0d6834ddeb4927dbf4de8713fb8c96c'  # 👈 Вставь сюда свой api_hash
+api_id = 22483560
+api_hash = 'b0d6834ddeb4927dbf4de8713fb8c96c'
 
 client = TelegramClient('bot', api_id, api_hash).start(bot_token=os.environ['BOT_TOKEN'])
 
@@ -53,11 +53,7 @@ async def main():
         try:
             result = await client(SearchRequest(q=keyword, limit=20))
             for chat in result.chats:
-                if isinstance(chat, (Channel, Chat)) and chat.username:
-                    # Временно убрано ограничение по сабам
-                    # if hasattr(chat, "participants_count") and not (1000 <= chat.participants_count <= 5050):
-                    #     continue
-
+                if isinstance(chat, (Channel, Chat)) and getattr(chat, "username", None):
                     try:
                         full = await client(functions.channels.GetFullChannelRequest(channel=chat))
                         description = full.full_chat.about or ""
@@ -70,17 +66,19 @@ async def main():
                         lang = "unknown"
 
                     now = datetime.datetime.now().strftime("%Y-%m-%d %H:%M")
-                    link = f"https://t.me/{chat.username}"
 
                     try:
-                        print(f"📍 Пытаюсь записать: {chat.title} | @{chat.username} | {chat.participants_count} сабов")
+                        username = chat.username or ""
+                        link = f"https://t.me/{username}"
+
+                        print(f"📍 Пытаюсь записать: {chat.title} | @{username} | {getattr(chat, 'participants_count', 'unknown')} сабов")
 
                         worksheet.append_row([
                             chat.title,
-                            chat.username,
+                            username,
                             link,
                             "",
-                            chat.participants_count,
+                            getattr(chat, "participants_count", ""),
                             keyword,
                             description,
                             lang,
@@ -105,4 +103,3 @@ async def main():
 
 with client:
     client.loop.run_until_complete(main())
-
