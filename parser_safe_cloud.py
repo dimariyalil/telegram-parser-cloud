@@ -12,7 +12,7 @@ import gspread
 from gspread_formatting import format_cell_range, cellFormat, color
 from parser_config import *
 
-client = TelegramClient('football_parser', api_id=YOUR_API_ID, api_hash='YOUR_API_HASH')
+client = TelegramClient('football_parser', api_id=22483560, api_hash='b0d6834ddeb4927dbf4de8713fb8c96c')
 
 def log(msg):
     with open("parser_log.txt", "a", encoding="utf-8") as f:
