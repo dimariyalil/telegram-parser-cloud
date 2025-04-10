@@ -54,8 +54,8 @@ async def main():
             result = await client(SearchRequest(q=keyword, limit=20))
             for chat in result.chats:
                 if isinstance(chat, (Channel, Chat)) and chat.username:
-                    if hasattr(chat, "participants_count") and not (1000 <= chat.participants_count <= 5050):
-                        continue
+# if hasattr(chat, "participants_count") and not (1000 <= chat.participants_count <= 5050):
+#     continue
 
                     try:
                         full = await client(functions.channels.GetFullChannelRequest(channel=chat))
