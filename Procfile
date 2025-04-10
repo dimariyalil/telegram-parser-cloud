@@ -1,0 +1,1 @@
+worker: python3 parser_safe_cloud.py

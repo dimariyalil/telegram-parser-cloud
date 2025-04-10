@@ -1,0 +1,7 @@
+
+telethon
+gspread
+oauth2client
+langdetect
+python-dateutil
+gspread-formatting
