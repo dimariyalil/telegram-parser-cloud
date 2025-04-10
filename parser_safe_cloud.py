@@ -17,7 +17,7 @@ from parser_config import *
 api_id = 22483560  # ← вставь свой
 api_hash = 'b0d6834ddeb4927dbf4de8713fb8c96c'  # ← вставь свой
 
-client = TelegramClient('bot', api_id, api_hash).start(bot_token=os.environ['7698841830:AAFIVD8cMc_GrEJBX2PayyM-0RU21mKU3x8'])
+client = TelegramClient('bot', api_id, api_hash).start(bot_token=os.environ['7601204006:AAEkLNV1amZCKkclU970ykUYuKdLXxfgEZg'])
 
 def log(msg):
     with open("parser_log.txt", "a", encoding="utf-8") as f:
