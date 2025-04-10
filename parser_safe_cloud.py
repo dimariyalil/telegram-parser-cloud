@@ -13,11 +13,11 @@ import gspread
 from gspread_formatting import format_cell_range, cellFormat, color
 from parser_config import *
 
-# === Telegram bot-based session ===
-api_id = 22483560  # ← вставь свой
-api_hash = 'b0d6834ddeb4927dbf4de8713fb8c96c'  # ← вставь свой
+api_id = 22483560  # 👈 Вставь сюда свой api_id
+api_hash = 'b0d6834ddeb4927dbf4de8713fb8c96c'  # 👈 Вставь сюда свой api_hash
 
 client = TelegramClient('bot', api_id, api_hash).start(bot_token=os.environ['BOT_TOKEN'])
+
 def log(msg):
     with open("parser_log.txt", "a", encoding="utf-8") as f:
         f.write(f"[{datetime.datetime.now()}] {msg}\n")
@@ -70,32 +70,37 @@ async def main():
 
                     now = datetime.datetime.now().strftime("%Y-%m-%d %H:%M")
                     link = f"https://t.me/{chat.username}"
-                    print(f"📝 Пытаюсь записать: {chat.title} | @{chat.username} | {chat.participants_count} сабов")
-try:
-    print(f"📝 Пытаюсь записать: {chat.title} | @{chat.username} | {chat.participants_count} сабов")
 
-    worksheet.append_row([
-        chat.title,
-        chat.username,
-        link,
-        "",
-        chat.participants_count,
-        keyword,
-        description,
-        lang,
-        "", "", now, STATUS_ON_INSERT
-    ])
+                    try:
+                        print(f"📝 Пытаюсь записать: {chat.title} | @{chat.username} | {chat.participants_count} сабов")
 
-    print(f"✅ Добавлено: {chat.title}")
-    save_file("keywords_done.txt", keyword)
+                        worksheet.append_row([
+                            chat.title,
+                            chat.username,
+                            link,
+                            "",
+                            chat.participants_count,
+                            keyword,
+                            description,
+                            lang,
+                            "", "", now, STATUS_ON_INSERT
+                        ])
 
-except Exception as write_error:
-    print(f"❌ Ошибка при записи в таблицу: {write_error}")
-    save_file("keywords_failed.txt", keyword)
-    log(f"❌ Ошибка при записи: {write_error}")
-    continue
+                        print(f"✅ Добавлено: {chat.title}")
+                        save_file("keywords_done.txt", keyword)
+
+                    except Exception as write_error:
+                        print(f"❌ Ошибка при записи в таблицу: {write_error}")
+                        save_file("keywords_failed.txt", keyword)
+                        log(f"❌ Ошибка при записи: {write_error}")
+                        continue
+
+        except Exception as e:
+            save_file("keywords_failed.txt", keyword)
+            log(f"❌ Ошибка с ключом {keyword}: {e}")
+        await asyncio.sleep(random.randint(SLEEP_MIN, SLEEP_MAX))
+
     log("✅ Парсинг завершён.")
 
 with client:
     client.loop.run_until_complete(main())
- 
