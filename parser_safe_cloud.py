@@ -52,6 +52,8 @@ async def main():
         print(f"🔍 Ключ: {keyword}")
         try:
             result = await client(SearchRequest(q=keyword, limit=20))
+            print(f"📦 result.chats = {result.chats}")  # 🔥 DEBUG: выводим весь результат
+
             for chat in result.chats:
                 if isinstance(chat, (Channel, Chat)) and getattr(chat, "username", None):
                     try:
