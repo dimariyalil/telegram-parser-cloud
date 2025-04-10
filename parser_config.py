@@ -2,5 +2,5 @@
 KEYS_PER_RUN = 75
 SLEEP_MIN = 3
 SLEEP_MAX = 5
-GOOGLE_SHEET_NAME = "parser"
+GOOGLE_SHEET_NAME = "parsersport"
 STATUS_ON_INSERT = "на модерации"
