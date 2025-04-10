@@ -72,7 +72,7 @@ async def main():
                     link = f"https://t.me/{chat.username}"
 
                     try:
-                        print(f"📝 Пытаюсь записать: {chat.title} | @{chat.username} | {chat.participants_count} сабов")
+                        print(f"📍 Пытаюсь записать: {chat.title} | @{chat.username} | {chat.participants_count} сабов")
 
                         worksheet.append_row([
                             chat.title,
